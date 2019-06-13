@@ -188,7 +188,7 @@ export default class Selfie extends React.Component {
         {renderLandmark(face.rightEarPosition)}
         {renderLandmark(face.leftCheekPosition)}
         {renderLandmark(face.rightCheekPosition)}
-        {renderLandmark(face.leftMouthPosition)}
+        {renderLandmark(face.leftMouthPosition)}  
         {renderLandmark(face.mouthPosition)}
         {renderLandmark(face.rightMouthPosition)}
         {renderLandmark(face.noseBasePosition)}
@@ -238,7 +238,7 @@ export default class Selfie extends React.Component {
         zoom={this.state.zoom}
         whiteBalance={this.state.whiteBalance}
         ratio={this.state.ratio}
-        faceDetectionLandmarks={Camera.Constants.FaceDetection.Landmarks.all}
+        // faceDetectionLandmarks={Camera.Constants.FaceDetection.Landmarks.all}
         onFacesDetected={this.onFacesDetected}
         onFaceDetectionError={this.onFaceDetectionError}
         focusDepth={this.state.depth}>
