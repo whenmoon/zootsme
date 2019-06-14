@@ -13,7 +13,6 @@ class VotingScreen extends Component {
     this.state = {pic: ''};
   }
 
-  
   componentWillMount() {
     // const { currentUser} = firebase.auth();
     const storage = firebase.storage();
@@ -41,7 +40,6 @@ class VotingScreen extends Component {
             console.log('YES button pressed')
             // gets other users image from firebase and metadata
             firebase.storage().ref('elbuenodeChuck.jpg').getMetadata().then(metadata => {
-              console.log('/////////////////////////////////////',metadata)
               // create counter which is counter plus one
               let newCounter = metadata.counter++;
               // create newlikes which is likes plus one
@@ -51,12 +49,10 @@ class VotingScreen extends Component {
                 counter: newCounter,
                 likes: newLikes
               }
-            // firebase.storage().ref('elbuenodeChuck.jpg').updateMetadata(newMetadata)
             firebase.storage().ref('elbuenodeChuck.jpg').updateMetadata(newMetadata)
             .catch(error => 'We need to talk... something happended')
             })
             firebase.storage().ref('mr-t.png').getDownloadURL().then(url=> {
-              console.log({pic: url}, '--------------------------------------------')
               this.setState({pic: url})
             })
             // firebase.storage().ref('hannibal.jpg').getDownloadURL().then(url=> this.setState({pic: url}))

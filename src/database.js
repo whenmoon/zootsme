@@ -2,10 +2,10 @@
   // TODO: Replace with your project's config object
 
 import * as firebase from 'firebase';
+import config from '../config/config'
 
 
-  var config = {
-  };
+  var config;
   firebase.initializeApp(config);
 
   // Get a reference to the database service

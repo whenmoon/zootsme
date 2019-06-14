@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Router from './src/Router';
 import * as firebase from 'firebase';
+import config from './src/config/config'
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -11,9 +13,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    firebase.initializeApp({
-
-    });
+    firebase.initializeApp(config);
 
     // method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {
