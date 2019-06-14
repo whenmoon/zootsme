@@ -12,12 +12,7 @@ export default class App extends React.Component {
 
   componentWillMount() {
     firebase.initializeApp({
-      apiKey: "AIzaSyC_WAOptgcEK5KkfMJMo85kiwciz2cVVew",
-      authDomain: "zutsme.firebaseapp.com",
-      databaseURL: "https://zutsme.firebaseio.com",
-      projectId: "zutsme",
-      storageBucket: "zutsme.appspot.com",
-      messagingSenderId: "737052347201"
+
     });
 
     // method for handling either signing in or out

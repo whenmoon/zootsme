@@ -6,23 +6,25 @@ import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux';
 // import console = require('console');
 
+// console.log('STORAGE:', firebase.storage());
 class VotingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {pic: ''};
   }
 
+  
   componentWillMount() {
     // const { currentUser} = firebase.auth();
     const storage = firebase.storage();
-
+    //  sets norris as default pic - should find other users pic
     const norris = storage.ref(`elbuenodeChuck.jpg`)
-      norris.getDownloadURL().then(url=> this.setState({pic: url}));
-
-  const timeout = setTimeout(()=> Actions.results(), 30000);
-
+    norris.getDownloadURL().then(url=> this.setState({pic: url}));
+    
+    const timeout = setTimeout(()=> Actions.results(), 30000);
+    
   }
-
+  
   render() {
     if (!this.state.pic) return <Text>Loading...</Text>
     return (
@@ -36,13 +38,20 @@ class VotingScreen extends Component {
 
         <CardSection>
           <Button onPress={() => {
+            console.log('YES button pressed')
+            // gets other users image from firebase and metadata
             firebase.storage().ref('elbuenodeChuck.jpg').getMetadata().then(metadata => {
+              console.log('/////////////////////////////////////',metadata)
+              // create counter which is counter plus one
               let newCounter = metadata.counter++;
+              // create newlikes which is likes plus one
               let newLikes = metadata.likes++;
-            const newMetadata = {
-              counter: newCounter,
-              likes: newLikes
-            }
+              // create new metatdata object and store above
+              const newMetadata = {
+                counter: newCounter,
+                likes: newLikes
+              }
+            // firebase.storage().ref('elbuenodeChuck.jpg').updateMetadata(newMetadata)
             firebase.storage().ref('elbuenodeChuck.jpg').updateMetadata(newMetadata)
             .catch(error => 'We need to talk... something happended')
             })
@@ -58,6 +67,7 @@ class VotingScreen extends Component {
             YES
           </Button>
           <Button onPress={ () => {
+            // gets a new pic and sets state to vote on - should change ref to other user
             firebase.storage().ref('mr-t.png').getDownloadURL().then(url=> this.setState({pic: url}))
             // firebase.storage().ref('hannibal.jpg').getDownloadURL().then(url=> this.setState({pic: url}))
             // firebase.storage().ref('Murdock.jpg').getDownloadURL().then(url=> this.setState({pic: url}))

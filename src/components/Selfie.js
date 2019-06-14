@@ -7,7 +7,7 @@ import {Actions} from 'react-native-router-flux'
 import firebase from 'firebase';
 
 const landmarkSize = 2;
-
+// console.log(firebase.storage())
 const flashModeOrder = {
   off: 'on',
   on: 'auto',
@@ -115,20 +115,23 @@ export default class Selfie extends React.Component {
     if (this.camera) {
       this.camera.takePictureAsync({base64: true})
       .then(data => {
-        console.log('INSIDE THE TAKEPIC');
-
+        console.log('INSIDE takePicture()');
         return fetch(data.uri);
       })
       .then(response => response.blob())
       .then(blob => {
         const storageRef = firebase.storage().ref();
+        console.log('===========================', storageRef);
+        
         const fileRef = storageRef.child('arol.jpg');
         return fileRef.put(blob, {
           contentType: 'image/jpeg'
         })
       })
       .then(snapshot => {
-        console.log('File uploaded', snapshot);
+        console.log('File uploaded', 
+        // snapshot
+        );
       })
       .catch(error => console.log('Got an error', error))
       Vibration.vibrate();

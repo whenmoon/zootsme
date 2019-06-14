@@ -4,24 +4,16 @@ import { View, Text} from 'react-native';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import Router from './Router'
+import config from './config'
 
 class App extends Component {
   constructor(props){
     super(props)
-
     this.state = { loggedIn: null}
   }
 
   componentWillMount() {
-    firebase.initializeApp({
-      apiKey: "AIzaSyB6sjVazk7007XyU13HectS6lWH9jc1HNo",
-      authDomain: "zootsme9999.firebaseapp.com",
-      databaseURL: "https://zootsme9999.firebaseio.com",
-      projectId: "zootsme9999",
-      storageBucket: "zootsme9999.appspot.com",
-      messagingSenderId: "760466397370",
-      appId: "1:760466397370:web:f3860e31d37f59de"
-    });
+    firebase.initializeApp(config);
 
     // method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {
