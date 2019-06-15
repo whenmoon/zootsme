@@ -8,7 +8,6 @@ import firebase from 'firebase';
 import uuidvV4 from 'uuid/v4';
 
 const landmarkSize = 2;
-// console.log(firebase.storage())
 const flashModeOrder = {
   off: 'on',
   on: 'auto',
