@@ -15,12 +15,14 @@ class LoginForm extends Component {
       loading: false };
   }
 
+
+
   onButtonPress() {
+
     const { email, password } = this.state;
-
+    
     this.setState({ error: '', loading: true });
-
-
+    
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         // this.onLoginSuccess.bind(this)

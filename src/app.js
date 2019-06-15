@@ -4,7 +4,10 @@ import { View, Text} from 'react-native';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import Router from './Router'
-
+import Adapter from 'enzyme-adapter-react-16';
+import Enzyme from 'enzyme';
+import Config from '../config';
+Enzyme.configure({ adapter: new Adapter() });
 class App extends Component {
   constructor(props){
     super(props)
@@ -14,13 +17,13 @@ class App extends Component {
 
   componentWillMount() {
     firebase.initializeApp({
-      apiKey: "AIzaSyB6sjVazk7007XyU13HectS6lWH9jc1HNo",
-      authDomain: "zootsme9999.firebaseapp.com",
-      databaseURL: "https://zootsme9999.firebaseio.com",
-      projectId: "zootsme9999",
-      storageBucket: "zootsme9999.appspot.com",
-      messagingSenderId: "760466397370",
-      appId: "1:760466397370:web:f3860e31d37f59de"
+      apiKey: Config.APIKey,
+      authDomain: Config.authDomain,
+      databaseURL: Config.databaseURL,
+      projectId: Config.projectId,
+      storageBucket: Config.storageBucket,
+      messagingSenderId: Config.messagingSenderId,
+      appId: Config.appId
     });
 
     // method for handling either signing in or out

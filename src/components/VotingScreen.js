@@ -24,6 +24,7 @@ class VotingScreen extends Component {
   }
 
   render() {
+    console.log(this.state.pic);
     if (!this.state.pic) return <Text>Loading...</Text>
     return (
       <Card>
