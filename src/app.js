@@ -4,27 +4,16 @@ import { View, Text} from 'react-native';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import Router from './Router'
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme from 'enzyme';
-import Config from '../config';
-Enzyme.configure({ adapter: new Adapter() });
+import config from './config/config'
+
 class App extends Component {
   constructor(props){
     super(props)
-
     this.state = { loggedIn: null}
   }
 
   componentWillMount() {
-    firebase.initializeApp({
-      apiKey: Config.APIKey,
-      authDomain: Config.authDomain,
-      databaseURL: Config.databaseURL,
-      projectId: Config.projectId,
-      storageBucket: Config.storageBucket,
-      messagingSenderId: Config.messagingSenderId,
-      appId: Config.appId
-    });
+    firebase.initializeApp(config);
 
     // method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {

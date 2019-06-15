@@ -8,6 +8,7 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
 
+
     this.state = {
       email: '',
       password: '',
@@ -76,6 +77,7 @@ class LoginForm extends Component {
   }
 
   render() {
+    console.log('============================////////////////////', this.props)
     return (
       <Card>
         <CardSection>

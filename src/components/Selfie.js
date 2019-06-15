@@ -5,9 +5,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'rea
 // import isIPhoneX from 'react-native-is-iphonex';
 import {Actions} from 'react-native-router-flux'
 import firebase from 'firebase';
+import uuidvV4 from 'uuid/v4';
 
 const landmarkSize = 2;
-
 const flashModeOrder = {
   off: 'on',
   on: 'auto',
@@ -113,22 +113,25 @@ export default class Selfie extends React.Component {
 
   takePicture = async function() {
     if (this.camera) {
+      const uuid = uuidvV4();
       this.camera.takePictureAsync({base64: true})
       .then(data => {
-        console.log('INSIDE THE TAKEPIC');
-
+        console.log('INSIDE takePicture()');
         return fetch(data.uri);
       })
       .then(response => response.blob())
       .then(blob => {
         const storageRef = firebase.storage().ref();
-        const fileRef = storageRef.child('arol.jpg');
+        // console.log('===========================', storageRef);
+        const fileRef = storageRef.child(uuid + '.jpg');
         return fileRef.put(blob, {
           contentType: 'image/jpeg'
         })
       })
       .then(snapshot => {
-        console.log('File uploaded', snapshot);
+        console.log('File uploaded', 
+        // snapshot
+        );
       })
       .catch(error => console.log('Got an error', error))
       Vibration.vibrate();
