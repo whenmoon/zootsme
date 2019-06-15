@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Text } from 'react-native';
-import { Button, Card, CardSection, InputField, Spinner} from './common';
-import { Actions } from 'react-native-router-flux'
+import { Button, Card, CardSection, InputField, Spinner } from './common';
+import { Actions } from 'react-native-router-flux';
+import { StateContext } from '../containers/State';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       email: '',
       password: '',
       error: '',
-      loading: false };
+      loading: false
+    };
   }
 
-
-
-  onButtonPress() {
+  onButtonPress(setEmailOnLogIn) {
 
     const { email, password } = this.state;
-    
+
     this.setState({ error: '', loading: true });
-    
+
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         // this.onLoginSuccess.bind(this)
@@ -41,6 +40,7 @@ class LoginForm extends Component {
           .then(this.onLoginSuccess.bind(this))
           .catch(this.onLoginFail.bind(this));
       });
+    setEmailOnLogIn(this.state.email)
   }
 
   onLoginFail() {
@@ -51,61 +51,66 @@ class LoginForm extends Component {
   }
 
   onLoginSuccess() {
-    console.log('INSIDE ONLOGIN SUCCESS',this.state)
+    console.log('INSIDE ONLOGIN SUCCESS', this.state)
     this.setState({
       email: '',
       password: '',
       loading: false,
       error: ''
-    },()=> console.log(this.state))
+    }, () => console.log(this.state))
 
     //comes from key in scenes
     Actions.main();
 
   }
 
-  renderButton() {
+  renderButton(setEmailOnLogIn) {
     if (this.state.loading) {
-      return <Spinner size="small"/>
+      return <Spinner size="small" />
     }
 
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
+      <Button onPress={this.onButtonPress.bind(this, setEmailOnLogIn)}>
         Log in
       </Button>
     )
   }
 
   render() {
-    console.log('============================////////////////////', this.props)
     return (
       <Card>
-        <CardSection>
-          <InputField
-          placeholder='user@email.com'
-          label="Email"
-          value={this.state.email}
-          onChangeText={email => this.setState({email})}
-          />
-        </CardSection>
+        <StateContext.Consumer>
+          {({ setEmailOnLogIn }) => (
+            <>
+              <CardSection>
+                <InputField
+                  placeholder='user@email.com'
+                  label="Email"
+                  value={this.state.email}
+                  onChangeText={email => this.setState({ email })}
+                />
+              </CardSection>
 
-        <CardSection>
-          <InputField
-          secureTextEntry
-          placeholder='password'
-          label="Password"
-          value={this.state.password}
-          onChangeText={password => this.setState({password})}
-          />
-        </CardSection>
+              <CardSection>
+                <InputField
+                  secureTextEntry
+                  placeholder='password'
+                  label="Password"
+                  value={this.state.password}
+                  onChangeText={password => this.setState({ password })}
+                />
+              </CardSection>
 
-        <Text style={styles.errorTextStyle}>
-          {this.state.error}
-        </Text>
+              <Text style={styles.errorTextStyle}>
+                {this.state.error}
+              </Text>
 
-        <CardSection>
-          {this.renderButton()}
-        </CardSection>
+              <CardSection>
+                {this.renderButton(setEmailOnLogIn)}
+              </CardSection>
+            </>
+          )}
+        </StateContext.Consumer>
       </Card>
     );
   }
