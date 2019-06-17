@@ -14,13 +14,13 @@ function State (props) {
     setEmailAddress(email)
   }
 
-  const addPhoto = (blob, uuid, emailAddress) => {
+  const addPhoto = (blob, uuid) => {
     setphotoUUIDs(uuid)
     sendPicToFirebase(blob, uuid, emailAddress)
   }
   
   return (
-    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto}}>
+    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto  }}>
         {props.children}
       </StateContext.Provider>
   )

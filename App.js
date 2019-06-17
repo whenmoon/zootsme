@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Router from './src/Router';
 import * as firebase from 'firebase';
-import config from './src/config/config'
+import { config } from './src/config/config'
 
 
 export default class App extends React.Component {

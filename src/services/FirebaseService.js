@@ -7,17 +7,10 @@ exports.sendPicToFirebase = (blob, uuid, emailAddress) => {
   fileRef.put(blob, {
     contentType: 'image/jpeg'
   })
-  // firebase.storage().ref(uuid + '.jpg').getDownloadURL().then(url => {
+  firebase.storage().ref(uuid + '.jpg').getDownloadURL().then(url => {
 
-    // writePhotoDataToDatabase(uuid, emailAddress, url, 1)
+    console.log(uuid, emailAddress, url)
 
-    firebase.database().ref('photos/' + uuid).set({
-      uuid: uuid,
-      email: 'tom@tom.com',
-      imageUrl: "Tom",
-      voteCount: 1
-    })
+  })
+  // writePhotoDataToDatabase(uuid, emailAddress, url, 1)
 }
-
-
-

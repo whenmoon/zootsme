@@ -52,12 +52,11 @@ export default class Selfie extends React.Component {
     this.setState({ permissionsGranted: status === 'granted' });
   }
 
-  componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log(e, 'Directory exists');
-      // console.log('SELFIE COMPONENT', emailForPhotoID)
-    });
-  }
+  // componentDidMount() {
+  //   FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+  //     console.log(e, 'Directory exists');
+  //   });
+  // }
 
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
