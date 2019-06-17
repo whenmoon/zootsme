@@ -15,19 +15,20 @@ class VotingScreen extends Component {
 
   componentWillMount() {
     // const { currentUser} = firebase.auth();
+
     const storage = firebase.storage();
-    //  sets norris as default pic - should find other users pic
-    const norris = storage.ref(`elbuenodeChuck.jpg`)
-    norris.getDownloadURL().then(url=> this.setState({pic: url}));
-    
-    const timeout = setTimeout(()=> Actions.results(), 30000);
-    
+    // get saved pic
+   // const norris = storage.ref(`elbuenodeChuck.jpg`)
+   // norris.getDownloadURL().then(url=> this.setState({pic: url}));
+    const timeout = setTimeout(()=> Actions.results(), 30000); 
   }
   
   render() {
     console.log(this.state.pic);
     if (!this.state.pic) return <Text>Loading...</Text>
     return (
+      <StateContext.Consumer>
+         {({ userDataArray }) => (
       <Card>
         <CardSection>
           <Image
@@ -44,11 +45,9 @@ class VotingScreen extends Component {
               // create counter which is counter plus one
               let newCounter = metadata.counter++;
               // create newlikes which is likes plus one
-              let newLikes = metadata.likes++;
               // create new metatdata object and store above
               const newMetadata = {
                 counter: newCounter,
-                likes: newLikes
               }
             firebase.storage().ref('elbuenodeChuck.jpg').updateMetadata(newMetadata)
             .catch(error => 'We need to talk... something happended')
@@ -64,6 +63,7 @@ class VotingScreen extends Component {
             YES
           </Button>
           <Button onPress={ () => {
+            console.log(userData);
             // gets a new pic and sets state to vote on - should change ref to other user
             firebase.storage().ref('mr-t.png').getDownloadURL().then(url=> this.setState({pic: url}))
             // firebase.storage().ref('hannibal.jpg').getDownloadURL().then(url=> this.setState({pic: url}))
@@ -75,6 +75,8 @@ class VotingScreen extends Component {
           </Button>
         </CardSection>
       </Card>
+      )}
+      </StateContext.Consumer>
     );
   }
 }

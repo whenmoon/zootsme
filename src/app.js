@@ -13,7 +13,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    console.log(config)
     firebase.initializeApp(config);
 
     //method for handling either signing in or out

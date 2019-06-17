@@ -13,9 +13,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    console.log(config)
     firebase.initializeApp(config);
-
     //method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {
       if (user) {
