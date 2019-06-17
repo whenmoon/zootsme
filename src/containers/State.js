@@ -20,7 +20,7 @@ function State (props) {
   }
   
   return (
-    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto}}>
+    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto  }}>
         {props.children}
       </StateContext.Provider>
   )

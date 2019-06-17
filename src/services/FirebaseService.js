@@ -21,6 +21,3 @@ exports.sendPicToFirebase = async (blob, uuid, emailAddress) => {
 
 
 }
-
-
-
