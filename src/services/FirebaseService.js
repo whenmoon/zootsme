@@ -1,22 +1,25 @@
 import firebase from 'firebase';
 // import { writePhotoDataToDatabase } from './databaseService' 
 
-exports.sendPicToFirebase = (blob, uuid, emailAddress) => {
+exports.sendPicToFirebase = async (blob, uuid, emailAddress) => {
   const storageRef = firebase.storage().ref();
   const fileRef = storageRef.child(uuid + '.jpg');
-  fileRef.put(blob, {
+  await fileRef.put(blob, {
     contentType: 'image/jpeg'
   })
-  // firebase.storage().ref(uuid + '.jpg').getDownloadURL().then(url => {
+  firebase.storage().ref(uuid + '.jpg').getDownloadURL().then(url => {
 
-    // writePhotoDataToDatabase(uuid, emailAddress, url, 1)
+    console.log(uuid, emailAddress, url)
+    fetch()
+   
+  })  
+  
 
-    firebase.database().ref('photos/' + uuid).set({
-      uuid: uuid,
-      email: 'tom@tom.com',
-      imageUrl: "Tom",
-      voteCount: 1
-    })
+
+
+
+
+
 }
 
 

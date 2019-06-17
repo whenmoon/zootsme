@@ -9,14 +9,14 @@ function State (props) {
   
   const [emailAddress, setEmailAddress] = useState(null);
   const [photoUUIDs, setphotoUUIDs] = useState(null);
-  
+  const [voteCount, setVoteCount] = useState(0);
   const setEmailOnLogIn = (email) => {
     setEmailAddress(email)
   }
 
-  const addPhoto = (blob, uuid, emailAddress) => {
+  const addPhoto = (blob, uuid) => {
     setphotoUUIDs(uuid)
-    sendPicToFirebase(blob, uuid, emailAddress)
+    sendPicToFirebase(blob, uuid, emailAddress, voteCount)
   }
   
   return (
