@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { useState } from 'react'
-// import console = require('console');
+import { sendPicToFirebase } from '../services/FirebaseService'
 
 export const StateContext = React.createContext(null);
 
@@ -10,18 +10,17 @@ function State (props) {
   const [emailAddress, setEmailAddress] = useState(null);
   const [photoUUIDs, setphotoUUIDs] = useState(null);
   
-  
   const setEmailOnLogIn = (email) => {
     setEmailAddress(email)
   }
 
-  const addPhotoUUIDs = (uuid) => {
+  const addPhoto = (blob, uuid, emailAddress) => {
     setphotoUUIDs(uuid)
-    console.log(uuid);
+    sendPicToFirebase(blob, uuid, emailAddress)
   }
   
   return (
-    <StateContext.Provider value={{ setEmailOnLogIn, addPhotoUUIDs}}>
+    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto}}>
         {props.children}
       </StateContext.Provider>
   )

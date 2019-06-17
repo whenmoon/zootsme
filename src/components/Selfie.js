@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'rea
 // import GalleryScreen from './GalleryScreen';
 // import isIPhoneX from 'react-native-is-iphonex';
 import { Actions } from 'react-native-router-flux'
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import uuidvV4 from 'uuid/v4';
 import { StateContext } from '../containers/State';
 
@@ -55,7 +55,7 @@ export default class Selfie extends React.Component {
   componentDidMount() {
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
       console.log(e, 'Directory exists');
-      console.log('SELFIE COMPONENT', emailForPhotoID)
+      // console.log('SELFIE COMPONENT', emailForPhotoID)
     });
   }
 
@@ -118,27 +118,25 @@ export default class Selfie extends React.Component {
     });
   }
 
-  takePicture = async function (addPhotoUUIDs) {
+  takePicture = async function (addPhoto) {
     if (this.camera) {
       const uuid = uuidvV4();
-      addPhotoUUIDs(uuid);
       this.camera.takePictureAsync({ base64: true })
-        .then(data => {
-          console.log('INSIDE takePicture()');
-          return fetch(data.uri);
-        })
-        .then(response => response.blob())
-        .then(blob => {
-          const storageRef = firebase.storage().ref();
-          const fileRef = storageRef.child(uuid + '.jpg');
-          return fileRef.put(blob, {
-            contentType: 'image/jpeg'
-          })
+      .then(data => {
+        console.log('INSIDE takePicture()');
+        return fetch(data.uri);
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        // const storageRef = firebase.storage().ref();
+        // const fileRef = storageRef.child(uuid + '.jpg');
+        // return fileRef.put(blob, {
+          //   contentType: 'image/jpeg'
+          addPhoto(blob, uuid);
+          // })
         })
         .then(snapshot => {
-          console.log('File uploaded',
-            // snapshot
-          );
+          console.log('File uploaded');
         })
         .catch(error => console.log('Got an error', error))
       Vibration.vibrate();
@@ -237,7 +235,7 @@ export default class Selfie extends React.Component {
     return (
       <>
         <StateContext.Consumer>
-          {({ addPhotoUUIDs }) => (
+          {({ addPhoto }) => (
             <Camera
               ref={ref => {
                 this.camera = ref;
@@ -314,7 +312,7 @@ export default class Selfie extends React.Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
-                  onPress={this.takePicture.bind(this, addPhotoUUIDs)}>
+                  onPress={this.takePicture.bind(this, addPhoto)}>
                   <Text style={styles.flipText}> SNAP </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
