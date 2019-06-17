@@ -4,7 +4,7 @@ import { View, Text} from 'react-native';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import Router from './Router'
-import { config } from './config/config'
+import config  from './config/config'
 
 class App extends Component {
   constructor(props){
@@ -13,9 +13,10 @@ class App extends Component {
   }
 
   componentWillMount() {
+    console.log(config)
     firebase.initializeApp(config);
 
-    // method for handling either signing in or out
+    //method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {
       if (user) {
         this.setState({ loggedIn: true});

@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Text } from 'react-native';
-<<<<<<< HEAD
 import { Button, Card, CardSection, InputField, Spinner} from './common';
 import { Actions } from 'react-native-router-flux';
-=======
-import { Button, Card, CardSection, InputField, Spinner } from './common';
-import { Actions } from 'react-native-router-flux';
-import { StateContext } from '../containers/State';
->>>>>>> 24bb44db50ad11dee62a02dfadc2cb1f29010bc8
-
+import {StateContext} from '../containers/State';
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -22,19 +16,11 @@ class LoginForm extends Component {
     };
   }
 
-<<<<<<< HEAD
 
 
   onButtonPress() {
     const { email, password } = this.state;
 
-    
-=======
-  onButtonPress(setEmailOnLogIn) {
-
-    const { email, password } = this.state;
-
->>>>>>> 24bb44db50ad11dee62a02dfadc2cb1f29010bc8
     this.setState({ error: '', loading: true });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -48,6 +34,8 @@ class LoginForm extends Component {
         })
         console.log('AFTER ON LOGIN SUCCESS', this.state);
         Actions.main();
+        setEmailOnLogIn(this.state.email)
+
       })
       .catch(() => {
         console.log('help');
@@ -55,7 +43,6 @@ class LoginForm extends Component {
           .then(this.onLoginSuccess.bind(this))
           .catch(this.onLoginFail.bind(this));
       });
-    setEmailOnLogIn(this.state.email)
   }
 
   onLoginFail() {

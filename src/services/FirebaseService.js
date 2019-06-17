@@ -10,7 +10,6 @@ exports.sendPicToFirebase = async (blob, uuid, emailAddress) => {
   firebase.storage().ref(uuid + '.jpg').getDownloadURL().then(url => {
 
     console.log(uuid, emailAddress, url)
-    fetch()
    
   })  
   

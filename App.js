@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Router from './src/Router';
 import * as firebase from 'firebase';
-import { config } from './src/config/config'
+import config  from './src/config/config'
 
 
 export default class App extends React.Component {
@@ -13,9 +13,10 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    console.log(config)
     firebase.initializeApp(config);
 
-    // method for handling either signing in or out
+    //method for handling either signing in or out
     firebase.auth().onAuthStateChanged( (user) => {
       if (user) {
         this.setState({ loggedIn: true});
