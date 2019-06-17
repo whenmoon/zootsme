@@ -3,9 +3,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'react-native';
 // import GalleryScreen from './GalleryScreen';
 // import isIPhoneX from 'react-native-is-iphonex';
-import {Actions} from 'react-native-router-flux'
-import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux'
+// import firebase from 'firebase';
 import uuidvV4 from 'uuid/v4';
+import { StateContext } from '../containers/State';
 
 const landmarkSize = 2;
 const flashModeOrder = {
@@ -25,20 +26,25 @@ const wbOrder = {
 };
 
 export default class Selfie extends React.Component {
-  state = {
-    flash: 'off',
-    zoom: 0,
-    autoFocus: 'on',
-    depth: 0,
-    type: 'back',
-    whiteBalance: 'auto',
-    ratio: '16:9',
-    ratios: [],
-    photoId: 1,
-    showGallery: false,
-    photos: [],
-    faces: [],
-    permissionsGranted: false,
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      flash: 'off',
+      zoom: 0,
+      autoFocus: 'on',
+      depth: 0,
+      type: 'back',
+      whiteBalance: 'auto',
+      ratio: '16:9',
+      ratios: [],
+      photoId: 1,
+      showGallery: false,
+      photos: [],
+      faces: [],
+      permissionsGranted: false,
+    }
   };
 
   async componentWillMount() {
@@ -46,11 +52,11 @@ export default class Selfie extends React.Component {
     this.setState({ permissionsGranted: status === 'granted' });
   }
 
-  componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log(e, 'Directory exists');
-    });
-  }
+  // componentDidMount() {
+  //   FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+  //     console.log(e, 'Directory exists');
+  //   });
+  // }
 
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
@@ -111,29 +117,27 @@ export default class Selfie extends React.Component {
     });
   }
 
-  takePicture = async function() {
+  takePicture = async function (addPhoto) {
     if (this.camera) {
       const uuid = uuidvV4();
-      this.camera.takePictureAsync({base64: true})
+      this.camera.takePictureAsync({ base64: true })
       .then(data => {
         console.log('INSIDE takePicture()');
         return fetch(data.uri);
       })
       .then(response => response.blob())
       .then(blob => {
-        const storageRef = firebase.storage().ref();
-        // console.log('===========================', storageRef);
-        const fileRef = storageRef.child(uuid + '.jpg');
-        return fileRef.put(blob, {
-          contentType: 'image/jpeg'
+        // const storageRef = firebase.storage().ref();
+        // const fileRef = storageRef.child(uuid + '.jpg');
+        // return fileRef.put(blob, {
+          //   contentType: 'image/jpeg'
+          addPhoto(blob, uuid);
+          // })
         })
-      })
-      .then(snapshot => {
-        console.log('File uploaded', 
-        // snapshot
-        );
-      })
-      .catch(error => console.log('Got an error', error))
+        .then(snapshot => {
+          console.log('File uploaded');
+        })
+        .catch(error => console.log('Got an error', error))
       Vibration.vibrate();
       Actions.voting();
     }
@@ -191,7 +195,7 @@ export default class Selfie extends React.Component {
         {renderLandmark(face.rightEarPosition)}
         {renderLandmark(face.leftCheekPosition)}
         {renderLandmark(face.rightCheekPosition)}
-        {renderLandmark(face.leftMouthPosition)}  
+        {renderLandmark(face.leftMouthPosition)}
         {renderLandmark(face.mouthPosition)}
         {renderLandmark(face.rightMouthPosition)}
         {renderLandmark(face.noseBasePosition)}
@@ -228,94 +232,100 @@ export default class Selfie extends React.Component {
 
   renderCamera() {
     return (
-      <Camera
-        ref={ref => {
-          this.camera = ref;
-        }}
-        style={{
-          flex: 1,
-        }}
-        type={this.state.type}
-        flashMode={this.state.flash}
-        autoFocus={this.state.autoFocus}
-        zoom={this.state.zoom}
-        whiteBalance={this.state.whiteBalance}
-        ratio={this.state.ratio}
-        // faceDetectionLandmarks={Camera.Constants.FaceDetection.Landmarks.all}
-        onFacesDetected={this.onFacesDetected}
-        onFaceDetectionError={this.onFaceDetectionError}
-        focusDepth={this.state.depth}>
-        <View
-          style={{
-            flex: 0.5,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingTop: Constants.statusBarHeight / 2,
-          }}>
-          <TouchableOpacity style={styles.flipButton} onPress={this.toggleFacing.bind(this)}>
-            <Text style={styles.flipText}> FLIP </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.flipButton} onPress={this.toggleFlash.bind(this)}>
-            <Text style={styles.flipText}> FLASH: {this.state.flash} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.flipButton} onPress={this.toggleWB.bind(this)}>
-            <Text style={styles.flipText}> WB: {this.state.whiteBalance} </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 0.4,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-            alignSelf: 'flex-end',
-            marginBottom: -5,
-          }}>
-          {this.state.autoFocus !== 'on' ? (
-            <Slider
-              style={{ width: 150, marginTop: 15, marginRight: 15, alignSelf: 'flex-end' }}
-              onValueChange={this.setFocusDepth.bind(this)}
-              step={0.1}
-            />
-          ) : null}
-        </View>
-        <View
-          style={{
-            flex: 0.1,
-            paddingBottom:  0,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomIn.bind(this)}>
-            <Text style={styles.flipText}> + </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomOut.bind(this)}>
-            <Text style={styles.flipText}> - </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.25, alignSelf: 'flex-end' }]}
-            onPress={this.toggleFocus.bind(this)}>
-            <Text style={styles.flipText}> AF : {this.state.autoFocus} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
-            onPress={this.takePicture.bind(this)}>
-            <Text style={styles.flipText}> SNAP </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, styles.galleryButton, { flex: 0.25, alignSelf: 'flex-end' }]}
-            onPress={this.toggleView.bind(this)}>
-            <Text style={styles.flipText}> Gallery </Text>
-          </TouchableOpacity>
-        </View>
-        {this.renderFaces()}
-        {this.renderLandmarks()}
-      </Camera>
+      <>
+        <StateContext.Consumer>
+          {({ addPhoto }) => (
+            <Camera
+              ref={ref => {
+                this.camera = ref;
+              }}
+              style={{
+                flex: 1,
+              }}
+              type={this.state.type}
+              flashMode={this.state.flash}
+              autoFocus={this.state.autoFocus}
+              zoom={this.state.zoom}
+              whiteBalance={this.state.whiteBalance}
+              ratio={this.state.ratio}
+              // faceDetectionLandmarks={Camera.Constants.FaceDetection.Landmarks.all}
+              onFacesDetected={this.onFacesDetected}
+              onFaceDetectionError={this.onFaceDetectionError}
+              focusDepth={this.state.depth}>
+              <View
+                style={{
+                  flex: 0.5,
+                  backgroundColor: 'transparent',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  paddingTop: Constants.statusBarHeight / 2,
+                }}>
+                <TouchableOpacity style={styles.flipButton} onPress={this.toggleFacing.bind(this)}>
+                  <Text style={styles.flipText}> FLIP </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.flipButton} onPress={this.toggleFlash.bind(this)}>
+                  <Text style={styles.flipText}> FLASH: {this.state.flash} </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.flipButton} onPress={this.toggleWB.bind(this)}>
+                  <Text style={styles.flipText}> WB: {this.state.whiteBalance} </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flex: 0.4,
+                  backgroundColor: 'transparent',
+                  flexDirection: 'row',
+                  alignSelf: 'flex-end',
+                  marginBottom: -5,
+                }}>
+                {this.state.autoFocus !== 'on' ? (
+                  <Slider
+                    style={{ width: 150, marginTop: 15, marginRight: 15, alignSelf: 'flex-end' }}
+                    onValueChange={this.setFocusDepth.bind(this)}
+                    step={0.1}
+                  />
+                ) : null}
+              </View>
+              <View
+                style={{
+                  flex: 0.1,
+                  paddingBottom: 0,
+                  backgroundColor: 'transparent',
+                  flexDirection: 'row',
+                  alignSelf: 'flex-end',
+                }}>
+                <TouchableOpacity
+                  style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
+                  onPress={this.zoomIn.bind(this)}>
+                  <Text style={styles.flipText}> + </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
+                  onPress={this.zoomOut.bind(this)}>
+                  <Text style={styles.flipText}> - </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.flipButton, { flex: 0.25, alignSelf: 'flex-end' }]}
+                  onPress={this.toggleFocus.bind(this)}>
+                  <Text style={styles.flipText}> AF : {this.state.autoFocus} </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
+                  onPress={this.takePicture.bind(this, addPhoto)}>
+                  <Text style={styles.flipText}> SNAP </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.flipButton, styles.galleryButton, { flex: 0.25, alignSelf: 'flex-end' }]}
+                  onPress={this.toggleView.bind(this)}>
+                  <Text style={styles.flipText}> Gallery </Text>
+                </TouchableOpacity>
+              </View>
+              {this.renderFaces()}
+              {this.renderLandmarks()}
+            </Camera>
+          )}
+        </StateContext.Consumer>
+      </>
     );
   }
 

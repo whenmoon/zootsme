@@ -1,5 +1,6 @@
 **/config
 node_modules/**/*
+zoots-me-server/server/node_modules
 .expo/*
 npm-debug.*
 *.jks
