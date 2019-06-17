@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-// import { writePhotoDataToDatabase } from './databaseService' 
+const axios = require('axios');
 
 exports.sendPicToFirebase = async (blob, uuid, emailAddress, voteCount) => {
   const storageRef = firebase.storage().ref();
@@ -16,21 +16,18 @@ exports.sendPicToFirebase = async (blob, uuid, emailAddress, voteCount) => {
     return photoInfo})
     .then((photoInfo) =>{ 
     console.log(photoInfo);
-    return fetch('http://localhost:4000/photo_data',{
-      'method': 'POST',
-      'headers':{ 
-      'content-type': 'application/json'
-      },
-      'body': JSON.stringify(photoInfo)
-    }) .then(res => {
-      console.log('hello')
-      return res.status === 200 ? res : Promise.reject(res)})
+    axios.post('http://192.168.1.193:4000/photo_data', {
+      photoInfo
+    })
+    .then(function (response) {
+    console.log('hello')
+    console.log(response);
+    })
+    .catch(function (error) {
+    // handle error
+    console.log(error);
+    }) 
   })
-   
-    .catch((err) => {
-      console.log(`${err.message} while fetching /${url}`)
-    });
-
 }  
 
 
