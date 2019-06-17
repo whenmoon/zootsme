@@ -18,7 +18,7 @@ class LoginForm extends Component {
 
 
 
-  onButtonPress() {
+  onButtonPress(setEmailOnLogIn) {
     const { email, password } = this.state;
 
     this.setState({ error: '', loading: true });
@@ -34,7 +34,6 @@ class LoginForm extends Component {
         })
         console.log('AFTER ON LOGIN SUCCESS', this.state);
         Actions.main();
-        setEmailOnLogIn(this.state.email)
 
       })
       .catch(() => {
@@ -43,6 +42,8 @@ class LoginForm extends Component {
           .then(this.onLoginSuccess.bind(this))
           .catch(this.onLoginFail.bind(this));
       });
+      setEmailOnLogIn(this.state.email)
+
   }
 
   onLoginFail() {
