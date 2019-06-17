@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Image } from 'react-native'
 import {Card, CardSection} from './common'
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 const ResultsScreen = () => {
   return (

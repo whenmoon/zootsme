@@ -8,21 +8,45 @@ import {CardSection} from './CardSection';
 import { InputField} from './InputField';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { View } from 'react-native';
 
 Enzyme.configure({ adapter: new Adapter() }); 
 
 const setState = ({email})=> jest.fn((email) => {});
 
 describe('Component tested with airbnb enzyme', () => {
-  test('App mount with enzyme', () => {
-    const wrapper = shallow(<CardSection><InputField
-      placeholder='user@email.com'
-      label="Email"
-      value="123CrazyMan@gmail.com"
-      onChangeText={email => setState({email})}
-      /></CardSection>);
+  test('card section unit test', () => {
+    const wrapper = mount(<CardSection></CardSection>);
 
-    expect(wrapper.find(InputField).to.have.label="Email");
+    const props = <View>
+      <Text>hello</Text>
+      </View>
+     
+    wrapper.setProps({
+        children: props
+    })    
+    expect(wrapper.find('Text').toBe="hello");
     
   });
+
+  test('card section integration test', () => {
+    const wrapper = mount(<CardSection></CardSection>);
+    const setState = jest.fn(email => email);
+  
+    const props = <InputField
+    placeholder='user@email.com'
+    label="Email"
+    value="123CrazyMan@gmail.com"
+    onChangeText={email => setState(email)}
+    />;
+
+    wrapper.setProps({
+      children: props
+    })  
+    
+    expect(wrapper.find('InputField').children().find('Text').at(0).props().children).toBe('Email');
+    expect(wrapper.find('InputField').children().find('TextInput').at(0).props().value).toBe('123CrazyMan@gmail.com');
+  });
+
+
 });

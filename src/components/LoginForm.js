@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { Text } from 'react-native';
 import { Button, Card, CardSection, InputField, Spinner} from './common';
-import { Actions } from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -19,8 +19,8 @@ class LoginForm extends Component {
 
 
   onButtonPress() {
-
     const { email, password } = this.state;
+
     
     this.setState({ error: '', loading: true });
     
@@ -37,6 +37,7 @@ class LoginForm extends Component {
         Actions.main();
       })
       .catch(() => {
+        console.log('help');
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then(this.onLoginSuccess.bind(this))
           .catch(this.onLoginFail.bind(this));
