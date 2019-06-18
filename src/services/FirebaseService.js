@@ -15,12 +15,12 @@ module.exports = {
           imageUrl: url,
           voteCount: voteCount
         }
-        console.log(photoInfo);
+        //console.log(photoInfo);
         return photoInfo
       })
       .then((photoInfo) => {
-        console.log(photoInfo);
-        fetch('http://192.168.1.193:4000/photo_data', {
+        //console.log(photoInfo);
+        fetch('http://192.168.1.100:4000/photo_data', {
           'method': 'POST',
           'headers':{ 
           'content-type': 'application/json'
@@ -37,7 +37,7 @@ module.exports = {
   },
   getFirebaseUrls: () => {
     console.log('hello')
-    return fetch('http://192.168.1.193:4000/photo_data')
+    return fetch('http://192.168.1.100:4000/photo_data')
     .then(res => {
       return res.status === 200 ? res : Promise.reject(res)})
     .then(res => res.json())

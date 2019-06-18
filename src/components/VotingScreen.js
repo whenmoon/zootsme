@@ -4,7 +4,7 @@ import {Card, CardSection, Button} from './common';
 import axios from 'axios';
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux';
-import { useState, useContext, useEffect} from 'react'
+import { useState, useContext, useEffect} from 'react';
 import { StateContext } from '../containers/State';
 
 function VotingScreen () {
@@ -16,11 +16,11 @@ function VotingScreen () {
 
 
   const getNextPic = (index) => {
-    console.log(userData)
     if (userData[index]) {
-    firebase.storage().ref(userData[index].imageUrl).getDownloadURL().then(url=> this.setPic({url}))
+     setPic(userData[index].imageUrl)
     } else {
-      //Actions.results()
+      // post userData changes
+      Actions.results()
     }
   }
 
@@ -42,16 +42,17 @@ function VotingScreen () {
         <CardSection>
           <Button onPress={() => {
             console.log('YES button pressed')
+            console.log(picNo)
               // create counter which is counter plus one
-              setPicNo(picNo => picNo++)
-              getNextPic(picNo++)
+              setPicNo(prevPicNo => prevPicNo+1)
+              getNextPic(picNo)
           }}
           >
             YES
           </Button>
           <Button onPress={ () => {
-            setPicNo(picNo => picNo++)
-              getNextPic(picNo++)
+            setPicNo(prevPicNo => prevPicNo+1)
+              getNextPic(picNo)
             }
             // change counter on database -1 
           }>

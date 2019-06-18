@@ -15,7 +15,6 @@ function State (props) {
   const setEmailOnLogIn = async(email) => {
     setEmailAddress(email)
     const storedUserInfo = await getFirebaseUrls()
-    console.log(storedUserInfo)
     const userDataArray = storedUserInfo.map(usersData =>{
       return {
         email:usersData.email,
@@ -24,7 +23,6 @@ function State (props) {
         voteCount: usersData.voteCount
       }
     });
-    console.log(userDataArray)
     setUserData(userDataArray);
   }
 
