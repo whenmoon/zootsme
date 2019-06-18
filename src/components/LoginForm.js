@@ -4,6 +4,10 @@ import { Text } from 'react-native';
 import { Button, Card, CardSection, InputField, Spinner} from './common';
 import { Actions } from 'react-native-router-flux';
 import {StateContext} from '../containers/State';
+
+
+
+
 class LoginForm extends Component {
   constructor(props) {
     super(props);
