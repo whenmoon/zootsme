@@ -49,6 +49,7 @@ export default class Selfie extends React.Component {
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    console.log(status);
     this.setState({ permissionsGranted: status === 'granted' });
   }
 

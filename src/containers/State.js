@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { useState} from 'react'
-import { sendPicToFirebase, getFirebaseUrls } from '../services/FirebaseService'
+import { sendPicToFirebase, getFirebaseUrls,updateVote  } from '../services/FirebaseService'
 
 export const StateContext = React.createContext(null);
 
@@ -12,6 +12,8 @@ function State (props) {
   const [photoUUIDs, setphotoUUIDs] = useState(null);
   const [voteCount, setVoteCount] = useState(0);
   const [userData, setUserData] = useState([])
+  const [winningScreen, setWinningScreen] = useState('');
+
   const setEmailOnLogIn = async(email) => {
     setEmailAddress(email)
     const storedUserInfo = await getFirebaseUrls()
@@ -26,13 +28,30 @@ function State (props) {
     setUserData(userDataArray);
   }
 
-  const addPhoto = (blob, uuid) => {
+  const voteYes =(uuid)=>{
+    console.log(uuid);
+    updateVote(uuid);
+  }
+   
+  // const setWinningScreen = () => {
+  //   const userData  = await getFirebaseUrls()
+  //   const maxCount = 0;
+  //   let winningUrl = '';
+  //   userData.forEach(photo => {
+  //     // need logic for a tie
+  //     if (photo.voteCount > maxCount) winningUrl = photo.imageUrl
+  //   })
+  //   return winningUrl;
+  // }  
+
+  const addPhoto = async (blob, uuid) => {
     setphotoUUIDs(uuid)
-    sendPicToFirebase(blob, uuid, emailAddress, voteCount)
+    const newPhoto = await sendPicToFirebase(blob, uuid, emailAddress, voteCount);
+    console.log(newPhoto, 'new Photo');
   }
   
   return (
-    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto, userData }}>
+    <StateContext.Provider value={{ setEmailOnLogIn, addPhoto, userData, voteYes,setWinningScreen, winningScreen }}>
         {props.children}
       </StateContext.Provider>
   )

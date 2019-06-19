@@ -7,8 +7,8 @@ import { Text } from 'react-native';
 import {CardSection} from '../components/common/CardSection'; 
 import { InputField} from '../components/common/InputField';
 import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import { View } from 'react-native';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() }); 
 

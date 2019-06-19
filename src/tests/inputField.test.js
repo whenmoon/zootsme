@@ -11,6 +11,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 
 /* unit tests */
+
 describe('texting the input field component', () => {
   test('texting inputs into the input field', () => {
   const setState = jest.fn(email => email);
@@ -24,7 +25,6 @@ describe('texting the input field component', () => {
   const val = wrapper.find('TextInput').props().value; 
   const label = wrapper.find('Text').props().children;
   const placeholder = wrapper.find('TextInput').props().placeholder; 
-  
   expect(label).toBe('Email');
   expect(val).toBe('123CrazyMan@gmail.com');
   expect(placeholder).toBe('user@email.com');

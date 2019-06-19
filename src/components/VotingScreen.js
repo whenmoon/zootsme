@@ -11,15 +11,14 @@ function VotingScreen () {
   
   const [pic, setPic] =useState('');
   const [picNo, setPicNo]= useState(0);
-  const {userData} = useContext(StateContext);
-
-
+  const {userData, voteYes, setWinningScreen} = useContext(StateContext);
 
   const getNextPic = (index) => {
     if (userData[index]) {
      setPic(userData[index].imageUrl)
     } else {
       // post userData changes
+      setWinningScreen()
       Actions.results()
     }
   }
@@ -43,7 +42,7 @@ function VotingScreen () {
           <Button onPress={() => {
             console.log('YES button pressed')
             console.log(picNo)
-              // create counter which is counter plus one
+              if (userData[picNo]) voteYes(userData[picNo].uuid)
               setPicNo(prevPicNo => prevPicNo+1)
               getNextPic(picNo)
           }}
@@ -54,7 +53,6 @@ function VotingScreen () {
             setPicNo(prevPicNo => prevPicNo+1)
               getNextPic(picNo)
             }
-            // change counter on database -1 
           }>
             NO
           </Button>
