@@ -1,63 +1,68 @@
 /**
  * @jest-environment jsdom
  */
-
+import { mount} from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Actions } from 'react-native-router-flux';
+import {StateContext} from '../containers/State';
 import * as firebase from 'firebase';
-Enzyme.configure({ adapter: new Adapter() }); 
 import {mocks} from './LoginForm.mock';
+import React from 'react';
+import LoginForm from '../components/LoginForm'; 
 
+
+Enzyme.configure({ adapter: new Adapter() }); 
 
 
 describe('Login form testing', () => {
   test('check that initial state is blank with loading false', () => {
-    mocks.wrapper.instance();
-    expect(mocks.wrapper.state()).toEqual({
-      email: '',
-      password: '',
-      error: '',
-      loading: false
-    })
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    );
+    wrapper.instance();
+    expect(wrapper.state()).toEqual(mocks.initialState);
   });
 
   test('should set state to authentication failed on Login Fail state', () => {
-    const wrapped = mocks.wrapper.instance()
-    wrapped.setState({
-      loading: true,
-      error: 'help'
-    });
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>);
+    
+    const wrapped = wrapper.instance()
+    wrapped.setState(mocks.loadWithErrorState);
     wrapped.onLoginFail();
-    expect(mocks.wrapper.state()).toEqual({
-      email: '',
-      error: 'Authentication failed',
-      password: '',
-      loading: false
-    })
+    expect(wrapper.state()).toEqual(mocks.authFailedState);
+  
   });
 
   test('unit test should clear login details on Login success', () => {
-    const wrapped = mocks.wrapper.instance();
-    wrapped.setState({
-      email: 'crazymonkey.com',
-      password: '123',
-      loading: true,
-      error: 'help'
-    });
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>);
+    const wrapped = wrapper.instance();
     Actions.main = mocks.main;
+    wrapped.setState(mocks.fakeUserLoadingState);
     wrapped.onLoginSuccess();
-    expect(mocks.wrapper.state()).toEqual({
-      email: '',
-      error: '',
-      password: '',
-      loading: false
-    })
-    expect(Actions.main).toHaveBeenCalled();
+    expect(wrapper.state()).toEqual(mocks.initialState)
+     
   });
 
   test('should navigate to main on Login Success', () => {
-    const wrapped = mocks.wrapper.instance();
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    )
+    const wrapped = wrapper.instance();
     Actions.main = mocks.main;
     wrapped.onLoginSuccess();
     expect(Actions.main).toHaveBeenCalled();
@@ -65,58 +70,62 @@ describe('Login form testing', () => {
 
   // // to do list 
   test('button pressed should create a user and sign in', () => {
-    
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    )
     firebase.auth = () => mocks.signIn;
-    const wrapped = mocks.wrapper.instance();
-    wrapped.setState({
-      email: 'crazymonkey.com',
-      password: '123'
-    });
-    mocks.wrapper.update()
+    const wrapped = wrapper.instance();
+    wrapped.setState(mocks.fakeUserState);
+    wrapper.update()
     wrapped.onButtonPress(() => mocks.setEmailOnLogIn);
     expect(mocks.signIn.signInWithEmailAndPassword).toHaveBeenCalledWith('crazymonkey.com', '123');
   });
 
-  test('button pressed should create a user and sign in', () => {
-   
-    firebase.auth = () => mocks.signIn;
-    const wrapped = mocks.wrapper.instance();
-    wrapped.setState({
-      email: 'evil',
-      password: '123'
-    });
-    wrapped.onButtonPress(() => mocks.setEmailOnLogIn);
-    mocks.wrapper.update()
-    expect(mocks.signIn.createUserWithEmailAndPassword).toHaveBeenCalled();
-  })
 
   test('spinner if loading', () => {
-    const wrapped = mocks.wrapper.instance();
-    wrapped.setState({
-      loading: true
-    })
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    )
+    const wrapped = wrapper.instance();
+    wrapped.setState(mocks.loadingTrueState)
     wrapped.renderButton();
-    mocks.wrapper.update()
-    expect(mocks.wrapper.find('Spinner').exists()).toBe(true)
+    wrapper.update()
+    expect(wrapper.find('Spinner').exists()).toBe(true)
   })
 
   test('Button is rendered', () => {
-    const wrapped = mocks.wrapper.instance();
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    )
+    const wrapped = wrapper.instance();
     wrapped.setState({
       loading: false
     })
     wrapped.renderButton();
-    mocks.wrapper.update();
-    expect(mocks.wrapper.find('Button').exists()).toBe(true)
+    wrapper.update();
+    expect(wrapper.find('Button').exists()).toBe(true)
   })
 
   test('Check if error is rendered', () => {
-    const wrapped = mocks.wrapper.instance();
-    wrapped.setState({
-      error: 'bad result'
-    })
-    mocks.wrapper.update()
-    expect(mocks.wrapper.find('Text').at(4).props().children).toBe('bad result')
+    const setEmailOnLogin = mocks.setEmailOnLogIn;
+    const wrapper = mount(
+      <StateContext.Provider value={{ setEmailOnLogin }}>
+        <LoginForm />
+      </StateContext.Provider>
+    )
+    const wrapped = wrapper.instance();
+    wrapped.setState(mocks.badResultState)
+    wrapper.update()
+    expect(wrapper.find('Text').at(4).props().children).toBe('bad result')
   })
 
 });

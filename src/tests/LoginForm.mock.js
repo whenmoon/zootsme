@@ -1,26 +1,50 @@
-import {StateContext} from '../containers/State';
-import { mount, render } from 'enzyme';
-import React from 'react';
-import LoginForm from '../components/LoginForm'; 
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme from 'enzyme';
-
-
-Enzyme.configure({ adapter: new Adapter() }); 
+/**
+ * @jest-environment jsdom
+ */
 
 export const mocks = {
   
-  wrapper: mount(
-    <StateContext.Provider value={{ setEmailOnLogin }}>
-      <LoginForm />
-    </StateContext.Provider>
-  ),
+
   main: jest.fn(),
   setEmailOnLogin: jest.fn(),
   signIn: {
     signInWithEmailAndPassword: jest.fn().mockImplementation((email, password) => new Promise((_, reject) => reject())),
     createUserWithEmailAndPassword: jest.fn().mockImplementation((email, password) => new Promise((resolve, reject) => {}))
+  },
+  initialState: {
+    email: '',
+    password: '',
+    error: '',
+    loading: false
+  },
+  loadWithErrorState: {
+    loading: true,
+    error: 'help'
+  },
+  authFailedState: {
+    email: '',
+    error: 'Authentication failed',
+    password: '',
+    loading: false
+  },
+  fakeUserLoadingState: {
+    email: 'crazymonkey.com',
+    password: '123',
+    loading: true,
+    error: 'help'
+  },fakeUserState: {
+    email: 'crazymonkey.com',
+    password: '123'
+  },
+  badResultState: {
+    error: 'bad result'
+  },
+  loadingTrueState: {
+    loading: true
   }
+
+
+
 
 
 
@@ -28,4 +52,3 @@ export const mocks = {
 
 }
 
-const setEmailOnLogin = jest.fn()

@@ -14,7 +14,9 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv":["./setup-tests.js"]
+
   },
   "dependencies": {
     "axios": "^0.19.0",

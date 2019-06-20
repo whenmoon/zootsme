@@ -339,6 +339,14 @@ export default class Selfie extends React.Component {
   }
 }
 
+
+
+
+
+
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

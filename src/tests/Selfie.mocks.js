@@ -1,23 +1,53 @@
-import {StateContext} from '../containers/State';
-import { mount, render } from 'enzyme';
-import React from 'react';
-import Selfie from '../components/Selfie'; 
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme from 'enzyme';
 
-
-Enzyme.configure({ adapter: new Adapter() });
-const newPhoto = {addPhoto: jest.fn()} 
 export const mocks = {
-
-  wrapper: mount(
-    <StateContext.Provider value={newPhoto}>
-        <Selfie/>
-    </StateContext.Provider>
-  ),
+   // place in test
   addPhoto: jest.fn(),
   askAsync: () => Promise.resolve('granted'),
-
+  statePermissionNotGranted: {
+    flash: 'off',
+    zoom: 0,
+    autoFocus: 'on',
+    depth: 0,
+    type: 'back',
+    whiteBalance: 'auto',
+    ratio: '16:9',
+    ratios: [],
+    photoId: 1,
+    showGallery: false,
+    photos: [],
+    faces: [],
+    permissionsGranted: false,
+  },
+  statePermissionGranted:{
+    flash: 'off',
+    zoom: 0,
+    autoFocus: 'on',
+    depth: 0,
+    type: 'back',
+    whiteBalance: 'auto',
+    ratio: '16:9',
+    ratios: [],
+    photoId: 1,
+    showGallery: false,
+    photos: [],
+    faces: [],
+    permissionsGranted: true,
+  },
+  statePermissionGrantedWithFaces:{
+    flash: 'off',
+    zoom: 0,
+    autoFocus: 'on',
+    depth: 0,
+    type: 'back',
+    whiteBalance: 'auto',
+    ratio: '16:9',
+    ratios: [],
+    photoId: 1,
+    showGallery: false,
+    photos: [],
+    faces: ["Matt", "Pete","Dave"],
+    permissionsGranted: true,
+  },
   
 
 }
