@@ -44,7 +44,7 @@ export default class Selfie extends React.Component {
       ratio: '16:9',
       ratios: [],
       photoId: 1,
-      // showGallery: false,
+      showGallery: false,
       photos: [],
       faces: [],
       permissionsGranted: false,
@@ -53,6 +53,7 @@ export default class Selfie extends React.Component {
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    console.log(status);
     this.setState({ permissionsGranted: status === 'granted' });
   }
 
@@ -342,6 +343,14 @@ export default class Selfie extends React.Component {
     return <View style={styles.container}>{content}</View>;
   }
 }
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {

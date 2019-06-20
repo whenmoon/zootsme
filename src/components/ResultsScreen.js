@@ -2,14 +2,24 @@ import React from 'react'
 import { Text, Image } from 'react-native'
 import {Card, CardSection} from './common'
 import firebase from 'firebase';
+import { StateContext } from '../containers/State';
+
+
+// winning screen 
+// winning pie chart
+
 
 const ResultsScreen = () => {
+
+  const {winningScreen} = useContext(StateContext);
+
+
   return (
   <Card>
     <CardSection>
       <Image
         style={styles.imageStyle}
-        source={ require('../config/elbuenodeChuck.jpg') }
+        source={ require(winningScreen) }
       />
     </CardSection>
     <CardSection>
@@ -24,6 +34,11 @@ const ResultsScreen = () => {
   </Card>
   )
 }
+
+
+
+
+
 const styles = {
   imageStyle: {
     height: 400,

@@ -7,8 +7,6 @@ function GalleryScreen() {
 
   const { userData } = useContext(StateContext);
 
-  // console.log(userData)
-
   const pic = userData[0].imageUrl
 
   return (

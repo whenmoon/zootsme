@@ -18,20 +18,20 @@ module.exports = {
         return photoInfo
       })
       .then((photoInfo) => {
-        console.log(photoInfo);
-        fetch('http://192.168.1.201:4000/photo_data', {
+        
+        fetch('http://192.168.1.193:4000/photo_data', {
           'method': 'POST',
           'headers':{ 
           'content-type': 'application/json'
           },
           'body': JSON.stringify(photoInfo)
         })
-          // .then(function (response) {
-          // })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
+        .then(res => {
+          return res.status === 200 ? res : Promise.reject(res)})
+        .then(res => res.json())
+        .catch((err) => {
+          console.log(`error`)
+        });
       })
   },
   getFirebaseUrls: () => {
@@ -43,6 +43,21 @@ module.exports = {
       console.log(`error`)
     });
 
+  },
+  updateVote: (uuid) => {
+    console.log(uuid)
+    return fetch(`http://192.168.1.193:4000/photo_data/${uuid}`,{
+      'method': 'PUT',
+      'headers':{ 
+      'content-type': 'application/json'
+      },
+      'body': ''
+    })
+    .then(res => {
+      return res.status === 204 ? res : Promise.reject(res)})
+    .catch((err) => {
+      console.log(`error`)
+    });
   }
 
 };

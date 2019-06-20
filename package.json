@@ -6,19 +6,32 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "node_modules/.bin/jest",
+    "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand",
+    "testWithCoverage": "jest --verbose --updateSnapshot --watch --coverage && open ./coverage/lcov-report/index.html",
+    "lint": "tslint src/**/*.ts",
+    "tsc": "tsc"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./setup-tests.js"
+    ]
   },
   "dependencies": {
     "axios": "^0.19.0",
     "expo": "^33.0.0",
     "firebase": "^6.1.1",
+    "jest-enzyme": "^7.0.2",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-native": "^0.59.9",
+    "react-native-dotenv": "^0.2.0",
+    "react-native-mock-render": "^0.1.4",
     "react-native-router-flux": "^4.0.6",
+    "react-native-scripts": "^2.0.1",
+    "react-native-testing-library": "^1.9.1",
     "react-native-web": "^0.11.4",
     "uuid": "^3.3.2"
   },
@@ -27,7 +40,8 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jest": "^24.8.0",
-    "jest-expo": "^33.0.2"
+    "jest-expo": "^33.0.2",
+    "react-test-renderer": "^16.8.6"
   },
   "private": true
 }
