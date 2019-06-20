@@ -8,6 +8,9 @@ import { Actions } from 'react-native-router-flux'
 import uuidvV4 from 'uuid/v4';
 import { StateContext } from '../containers/State';
 
+import GalleryScreen from './GalleryScreen'
+import { AnchorType } from 'expo/build/AR';
+
 const landmarkSize = 2;
 const flashModeOrder = {
   off: 'on',
@@ -15,6 +18,7 @@ const flashModeOrder = {
   auto: 'torch',
   torch: 'off',
 };
+
 
 const wbOrder = {
   auto: 'sunny',
@@ -40,7 +44,7 @@ export default class Selfie extends React.Component {
       ratio: '16:9',
       ratios: [],
       photoId: 1,
-      showGallery: false,
+      // showGallery: false,
       photos: [],
       faces: [],
       permissionsGranted: false,
@@ -147,7 +151,8 @@ export default class Selfie extends React.Component {
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
   renderGallery() {
-    return <GalleryScreen onPress={this.toggleView.bind(this)} />;
+    // return <GalleryScreen onPress={this.toggleView.bind(this)} />;
+    Actions.gallery()
   }
 
   renderFace({ bounds, faceID, rollAngle, yawAngle }) {

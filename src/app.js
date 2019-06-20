@@ -4,7 +4,7 @@ import { View, Text} from 'react-native';
 import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import Router from './Router'
-import config  from './config/config'
+import {config}  from './config/config'
 
 class App extends Component {
   constructor(props){

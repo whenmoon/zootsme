@@ -1,67 +1,62 @@
-import React, {Component} from 'react';
-import {View, Text, Image} from 'react-native';
-import {Card, CardSection, Button} from './common';
-import axios from 'axios';
-import firebase from 'firebase'
+import React from 'react';
+import { Text, Image } from 'react-native';
+import { Card, CardSection, Button } from './common';
 import { Actions } from 'react-native-router-flux';
-import { useState, useContext, useEffect} from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { StateContext } from '../containers/State';
 
-function VotingScreen () {
-  
-  const [pic, setPic] =useState('');
-  const [picNo, setPicNo]= useState(0);
-  const {userData} = useContext(StateContext);
+function VotingScreen() {
 
-
+  const [pic, setPic] = useState('');
+  const [picNo, setPicNo] = useState(0);
+  const { userData } = useContext(StateContext);
 
   const getNextPic = (index) => {
     if (userData[index]) {
-     setPic(userData[index].imageUrl)
+      setPic(userData[index].imageUrl)
     } else {
       // post userData changes
       Actions.results()
     }
   }
 
-  useEffect(()=> {
-      getNextPic(0)
-    },[]);
-  
-    console.log(pic);
-    if (pic ==='') return <Text>Loading...</Text>
-    return (
-      <Card>
-        <CardSection>
-          <Image
-            style={styles.imageStyle}
-            source={{uri: pic}}
-          />
-        </CardSection>
+  useEffect(() => {
+    getNextPic(0)
+  }, []);
 
-        <CardSection>
-          <Button onPress={() => {
-            console.log('YES button pressed')
-            console.log(picNo)
-              // create counter which is counter plus one
-              setPicNo(prevPicNo => prevPicNo+1)
-              getNextPic(picNo)
-          }}
-          >
-            YES
+  console.log(pic);
+  if (pic === '') return <Text>Loading...</Text>
+  return (
+    <Card>
+      <CardSection>
+        <Image
+          style={styles.imageStyle}
+          source={{ uri: pic }}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Button onPress={() => {
+          console.log('YES button pressed')
+          console.log(picNo)
+          // create counter which is counter plus one
+          setPicNo(prevPicNo => prevPicNo + 1)
+          getNextPic(picNo)
+        }}
+        >
+          YES
           </Button>
-          <Button onPress={ () => {
-            setPicNo(prevPicNo => prevPicNo+1)
-              getNextPic(picNo)
-            }
-            // change counter on database -1 
-          }>
-            NO
+        <Button onPress={() => {
+          setPicNo(prevPicNo => prevPicNo + 1)
+          getNextPic(picNo)
+        }
+          // change counter on database -1 
+        }>
+          NO
           </Button>
-        </CardSection>
-      </Card>
-      )
-  
+      </CardSection>
+    </Card>
+  )
 }
 
 const styles = {

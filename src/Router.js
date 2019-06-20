@@ -6,6 +6,7 @@ import TaggingScreen from './components/TaggingScreen';
 import ResultsScreen from './components/ResultsScreen';
 import Selfie from './components/Selfie';
 import State from './containers/State';
+import GalleryScreen from './components/GalleryScreen';
 
 const RouterComponent = () => {
 
@@ -23,6 +24,7 @@ const RouterComponent = () => {
           and finally results linking back to tagging */}
             <Scene key="main" >
               <Scene key="selfie" component={Selfie} title="Take a selfie..." />
+              <Scene key="gallery" component={GalleryScreen} title="Gallery..." />
               <Scene key="voting" component={VotingScreen} title="Voting..." />
               <Scene key="tagging" component={TaggingScreen} title="Tag your selfie..." />
               <Scene key="results" component={ResultsScreen} title="Your results" />
