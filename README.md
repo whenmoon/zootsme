@@ -6,6 +6,8 @@ Inherited as a legacy project and as a team of two, we re-built the Firebase bac
 
 This project is a work in progress.##
 
+Back-end repo is [here](https://github.com/whenmoon/zoots-me-server)
+
 
 ## Prerequisites
 
@@ -43,6 +45,6 @@ Using Metro Bundler set to Local, select 'run on Android device/emulator'
 
 ## Tech Stack
 
-[React Native](https://facebook.github.io/react-native/)
-[Enzyme](https://airbnb.io/enzyme/)
-[Firebase]([Firebase](https://firebase.google.com/)
+* [React Native](https://facebook.github.io/react-native/)
+* [Enzyme](https://airbnb.io/enzyme/)
+* [Firebase](https://firebase.google.com/)
