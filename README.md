@@ -4,7 +4,7 @@ Zoots Me allows users to have their outfits rated! Take a snap and and while you
 
 Inherited as a legacy project and as a team of two, we re-built the Firebase back-end using Express and MongoDB so we could write tests using Jest and SuperTest. We also wrote tests for the front-end using Jest and Enzyme.
 
-This project is a work in progress.##
+This project is a work in progress.
 
 Back-end repo is [here](https://github.com/whenmoon/zoots-me-server)
 
@@ -42,6 +42,10 @@ Launch your AVD using Android studio
 
 Using Metro Bundler set to Local, select 'run on Android device/emulator'
 ```
+
+## Tests
+
+`npm test`
 
 ## Tech Stack
 
