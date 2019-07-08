@@ -1,4 +1,4 @@
-# zootsme
+# Zoots Me
 
 Zoots Me allows users to have their outfits rated! Take a snap and and while you're waiting for people to rate it, rate other people's.
 
