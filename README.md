@@ -6,7 +6,7 @@ Inherited as a legacy project and as a team of two, we re-built the Firebase bac
 
 This project is a work in progress.
 
-Back-end repo is [here](https://github.com/whenmoon/zoots-me-server)
+Back-end repo is [here](https://github.com/whenmoon/zoots-me-server).
 
 
 ## Prerequisites
